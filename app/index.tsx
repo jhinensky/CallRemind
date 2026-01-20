@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ContactCard from '../components/ContactCard';
 import { Contact, useContacts } from '../context/ContactsContext';
@@ -7,10 +7,18 @@ const COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F'
 
 export default function Homes() {
   const { contacts, deleteContact, addCallHistory } = useContacts();
-
   const [currentContact, setCurrentContact] = useState<Contact | null>(null);
   const [currentColor, setCurrentColor] = useState<string>(COLORS[0]);
   const [isShuffling, setIsShuffling] = useState(false);
+
+    useEffect(() => {
+    if (contacts.length > 0 && !currentContact) {
+      const randomContact = contacts[Math.floor(Math.random() * contacts.length)];
+      const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+      setCurrentContact(randomContact);
+      setCurrentColor(randomColor);
+    }
+  }, [contacts, currentContact]);
 
   const shuffleThroughCards = async () => {
     if (contacts.length === 0 || isShuffling) return;

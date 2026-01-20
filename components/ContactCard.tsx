@@ -1,0 +1,123 @@
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+
+type Contact = {
+  id: number;
+  name: string;
+  dob: string;
+  phone: string;
+  lastSpoken: string;
+  avatar: string;
+};
+
+type ContactCardProps = {
+  contact: Contact;
+  color: string;
+};
+
+const ContactCard = ({ contact, color }: ContactCardProps) => {
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+    return `${Math.floor(diffDays / 30)} months ago`;
+  };
+
+  return (
+    <View style={[styles.card, { backgroundColor: color }]}>
+      {/* Photo Section - Left side */}
+      <View style={styles.photoContainer}>
+        <Text style={styles.avatar}>{contact.avatar}</Text>
+      </View>
+
+      {/* Info Section - Right side */}
+      <View style={styles.infoContainer}>
+        <Text style={styles.cardTitle}>IDENTIFICATION</Text>
+        
+        <View style={styles.field}>
+          <Text style={styles.label}>Name</Text>
+          <Text style={[styles.value, styles.valueLarge]}>{contact.name}</Text>
+        </View>
+
+        <View style={styles.field}>
+          <Text style={styles.label}>DOB</Text>
+          <Text style={styles.value}>{contact.dob}</Text>
+        </View>
+
+        <View style={styles.field}>
+          <Text style={styles.label}>Phone</Text>
+          <Text style={styles.value}>{contact.phone}</Text>
+        </View>
+
+        <View style={styles.field}>
+          <Text style={styles.label}>Last Contact</Text>
+          <Text style={styles.value}>{formatDate(contact.lastSpoken)}</Text>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  card: {
+    width: 340,
+    height: 200,
+    borderRadius: 12,
+    padding: 20,
+    flexDirection: 'row', // Horizontal layout like an ID card
+    gap: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  photoContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatar: {
+    fontSize: 48,
+  },
+  infoContainer: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  cardTitle: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: 'rgba(255,255,255,0.7)',
+    letterSpacing: 1.5,
+    marginBottom: 8,
+  },
+  field: {
+    marginBottom: 8,
+  },
+  label: {
+    fontSize: 9,
+    color: 'rgba(255,255,255,0.6)',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 2,
+  },
+  value: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#fff',
+  },
+  valueLarge: {
+    fontSize: 16,
+  },
+});
+
+export default ContactCard;
