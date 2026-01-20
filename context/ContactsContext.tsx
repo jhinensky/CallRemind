@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import * as picker from 'expo-document-picker'
+import papa from 'papaparse'
 
 
 export type Contact = {
@@ -22,6 +24,7 @@ type ContactsContextType = {
   callHistory: CallHistoryItem[];
   deleteContact: (id: number) => void;
   addCallHistory: (contact: Contact) => void;
+  import_contacts:(new_contacts:Contact[])=>void
 }
 
 const INITIAL_CONTACTS: Contact[] = [
@@ -52,8 +55,13 @@ export function ContactsProvider({ children }: { children: ReactNode }) {
     setCallHistory(prev => [newCall, ...prev]);
   };
 
+  const import_contacts=(new_contacts:Contact[])=>
+  {
+    setContacts(prev=>[...prev,...new_contacts]);
+  }
+
   return (
-    <ContactsContext.Provider value={{ contacts, callHistory, deleteContact, addCallHistory }}>
+    <ContactsContext.Provider value={{ contacts, callHistory, deleteContact, addCallHistory,import_contacts}}>
       {children}
     </ContactsContext.Provider>
   );
@@ -65,5 +73,39 @@ export function useContacts() {
     throw new Error('useContacts must be used within ContactsProvider');
   }
   return context;
+}
+
+const read=async(uri:string):Promise<string>=>
+{
+  const res=await fetch(uri)
+  const text=await res.text()
+  return text
+}
+const parse=(data:string):Contact[]=>
+{
+  const results=papa.parse(data,{header:true})
+  return results.data.map((row:any,index:number)=>
+    (
+      {
+        id:index,
+        name:row.name,
+        dob:row.dob||'',
+        phone:row.phone||'',
+        lastSpoken:row.lastSpoken||new Date().toISOString(),
+        avatar:row.avatar||'👤'
+      }
+    )
+  )
+}
+export const choose_file=async(loaded:(contacts:Contact[])=>void)=>
+{
+  const result=await picker.getDocumentAsync({type:'text/csv'})
+  if(!result.canceled)
+  {
+    const uri=result.assets[0].uri
+    const data=await read(uri)
+    const contacts=await parse(data)
+    loaded(contacts)
+  }
 }
 
