@@ -30,8 +30,7 @@ const ContactCard = ({ contact, color, onAvatarPress }: ContactCardProps) => {
     return `${Math.floor(diffDays / 30)} months ago`;
   };
 
-  
-const isImage = contact.avatar.length > 4;
+  const isImage = contact.avatar.startsWith('http://') || contact.avatar.startsWith('https://') || contact.avatar.startsWith('file://');
 
   return (
     <View style={[styles.card, { backgroundColor: color }]}>
