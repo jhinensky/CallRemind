@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ContactCard from '../components/ContactCard';
-import { Contact, useContacts } from '../context/ContactsContext';
+import { Contact, useContacts,choose_file} from '../context/ContactsContext';
 
 const COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2'];
 
 export default function Homes() {
-  const { contacts, deleteContact, addCallHistory } = useContacts();
+  const { contacts, deleteContact, addCallHistory,import_contacts} = useContacts();
   const [currentContact, setCurrentContact] = useState<Contact | null>(null);
   const [currentColor, setCurrentColor] = useState<string>(COLORS[0]);
   const [isShuffling, setIsShuffling] = useState(false);
@@ -66,6 +66,15 @@ export default function Homes() {
     shuffleThroughCards();
   };
 
+  const handle_contacts=()=>
+  {
+    choose_file((imported)=>
+      {
+        import_contacts(imported)
+      }
+    )
+  }
+
   if (!currentContact) {
     return (
       <View style={styles.container}>
@@ -78,6 +87,10 @@ export default function Homes() {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.import_btn} onPress={handle_contacts}>
+        <Text style={styles.import_text}>import contacts</Text>
+      </TouchableOpacity>
+
       <View>
         <ContactCard contact={currentContact} color={currentColor} />
       </View>
@@ -164,5 +177,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#999',
   },
+  import_btn:
+  {
+    backgroundColor:'#000000',
+    paddingVertical:10,
+    paddingHorizontal:20,
+    borderRadius:10,
+    marginBottom:20
+  },
+  import_text:
+  {
+    color:'#fff',
+    fontSize:15,
+    fontWeight:'bold',
+    textAlign:'center'
+  }
 });
 
