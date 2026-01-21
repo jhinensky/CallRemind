@@ -56,7 +56,7 @@ const ContactCard = ({ contact, color }: ContactCardProps) => {
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Last Contact</Text>
+          <Text style={styles.label}>Last Call</Text>
           <Text style={styles.value}>{formatDate(contact.lastSpoken)}</Text>
         </View>
       </View>
@@ -66,8 +66,8 @@ const ContactCard = ({ contact, color }: ContactCardProps) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: 340,
-    height: 200,
+    width: 510,
+    height: 300,
     borderRadius: 12,
     padding: 20,
     flexDirection: 'row', // Horizontal layout like an ID card
@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   photoContainer: {
-    width: 100,
-    height: 100,
+    width: 180,
+    height: 250,
     borderRadius: 8,
     backgroundColor: 'rgba(255,255,255,0.3)',
     justifyContent: 'center',
