@@ -1,4 +1,4 @@
-// app/_layout.tsx
+
 import { Tabs } from "expo-router";
 import { ContactsProvider } from '../context/ContactsContext'; 
 
@@ -15,13 +15,7 @@ export default function RootLayout() {
         <Tabs.Screen
           name="index"
           options={{
-            title: 'Home',
-          }}
-        />
-        <Tabs.Screen
-          name="recent"
-          options={{
-            title: 'Recent',
+            title: 'Made By: Jhinensky, Yixin, Nona and Liam',
           }}
         />
       </Tabs>

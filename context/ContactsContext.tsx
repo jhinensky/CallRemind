@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 import * as picker from 'expo-document-picker'
 import papa from 'papaparse'
 
-
 export type Contact = {
   id: number;
   name: string;
@@ -24,7 +23,8 @@ type ContactsContextType = {
   callHistory: CallHistoryItem[];
   deleteContact: (id: number) => void;
   addCallHistory: (contact: Contact) => void;
-  import_contacts:(new_contacts:Contact[])=>void
+  import_contacts:(new_contacts:Contact[])=>void;
+  editContact: (id: number, updates: Partial<Contact>) => void;
 }
 
 const INITIAL_CONTACTS: Contact[] = [
@@ -60,8 +60,14 @@ export function ContactsProvider({ children }: { children: ReactNode }) {
     setContacts(prev=>[...prev,...new_contacts]);
   }
 
+  const editContact = (id: number, updates: Partial<Contact>) => {
+    setContacts(prev => prev.map(contact => 
+      contact.id === id ? { ...contact, ...updates } : contact
+    ));
+  };
+
   return (
-    <ContactsContext.Provider value={{ contacts, callHistory, deleteContact, addCallHistory,import_contacts}}>
+    <ContactsContext.Provider value={{ contacts, callHistory, deleteContact, addCallHistory, import_contacts, editContact}}>
       {children}
     </ContactsContext.Provider>
   );
@@ -81,6 +87,7 @@ const read=async(uri:string):Promise<string>=>
   const text=await res.text()
   return text
 }
+
 const parse=(data:string):Contact[]=>
 {
   const results=papa.parse(data,{header:true})
@@ -97,6 +104,7 @@ const parse=(data:string):Contact[]=>
     )
   )
 }
+
 export const choose_file=async(loaded:(contacts:Contact[])=>void)=>
 {
   const result=await picker.getDocumentAsync({type:'text/csv'})
@@ -109,3 +117,10 @@ export const choose_file=async(loaded:(contacts:Contact[])=>void)=>
   }
 }
 
+
+export const pick_image = async (loaded: (uri: string) => void) => {
+  const result = await picker.getDocumentAsync({ type: 'image/*' });
+  if (!result.canceled && result.assets && result.assets.length > 0) {
+    loaded(result.assets[0].uri);
+  }
+};

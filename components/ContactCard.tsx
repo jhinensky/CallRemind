@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
 type Contact = {
   id: number;
@@ -13,9 +13,10 @@ type Contact = {
 type ContactCardProps = {
   contact: Contact;
   color: string;
+  onAvatarPress?: () => void; 
 };
 
-const ContactCard = ({ contact, color }: ContactCardProps) => {
+const ContactCard = ({ contact, color, onAvatarPress }: ContactCardProps) => {
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     const now = new Date();
@@ -29,14 +30,31 @@ const ContactCard = ({ contact, color }: ContactCardProps) => {
     return `${Math.floor(diffDays / 30)} months ago`;
   };
 
+  
+const isImage = contact.avatar.length > 4;
+
   return (
     <View style={[styles.card, { backgroundColor: color }]}>
-      {/* Photo Section - Left side */}
-      <View style={styles.photoContainer}>
-        <Text style={styles.avatar}>{contact.avatar}</Text>
-      </View>
+      <TouchableOpacity 
+        style={styles.photoContainer} 
+        onPress={onAvatarPress}
+        activeOpacity={0.7}
+      >
+        {isImage ? (
+          <Image 
+            source={{ uri: contact.avatar }} 
+            style={styles.avatarImage} 
+            resizeMode="cover"
+          />
+        ) : (
+          <Text style={styles.avatar}>{contact.avatar}</Text>
+        )}
+        
+        <View style={styles.editIconContainer}>
+          <Text style={styles.editIcon}>✎</Text>
+        </View>
+      </TouchableOpacity>
 
-      {/* Info Section - Right side */}
       <View style={styles.infoContainer}>
         <Text style={styles.cardTitle}>IDENTIFICATION</Text>
         
@@ -70,7 +88,7 @@ const styles = StyleSheet.create({
     height: 300,
     borderRadius: 12,
     padding: 20,
-    flexDirection: 'row', // Horizontal layout like an ID card
+    flexDirection: 'row', 
     gap: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
@@ -85,9 +103,32 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.3)',
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
+    position: 'relative',
   },
   avatar: {
     fontSize: 48,
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
+  editIconContainer: {
+    position: 'absolute',
+    bottom: 8,
+    right: 8,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    borderRadius: 12,
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  editIcon: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   infoContainer: {
     flex: 1,
