@@ -128,7 +128,7 @@ export default function Homes() {
         animationType="slide"
         onRequestClose={() => setIsEditModalVisible(false)}
       >
-        <View style={styles.modalOverlay}>
+         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Edit Contact</Text>
             
@@ -166,8 +166,7 @@ export default function Homes() {
         </View>
       </Modal>
 
-      {/* --- NEW TITLE HERE --- */}
-      <Text style={styles.appTitle}>Random Contact Caller</Text>
+      <Text style={styles.appTitle}>Random Contact Caller!</Text>
 
       <TouchableOpacity style={styles.import_btn} onPress={handle_contacts}>
         <Text style={styles.import_text}>Import Contacts</Text>
@@ -226,16 +225,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  // --- NEW STYLE HERE ---
   appTitle: {
     fontSize: 28,
     fontWeight: '800',
     color: '#333',
     marginBottom: 20,
-    marginTop: -20, // Helps pull it up slightly if the container is centered
+    marginTop: -20,
     letterSpacing: 0.5,
   },
-  // ... existing styles ...
   buttonRow: {
     flexDirection: 'row',
     gap: 8,
@@ -304,7 +301,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContent: {
-    backgroundColor: '#d6eadf', 
+    backgroundColor: '#d6eadf',
     width: 320,
     padding: 24,
     borderRadius: 16,
@@ -334,7 +331,7 @@ const styles = StyleSheet.create({
     padding: 12,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#eac4d5', 
+    borderColor: '#eac4d5',
   },
   modalButtonRow: {
     flexDirection: 'row',
@@ -348,10 +345,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cancelButton: {
-    backgroundColor: '#eac4d5', 
+    backgroundColor: '#eac4d5',
   },
   saveButton: {
-    backgroundColor: '#809bce', 
+    backgroundColor: '#809bce',
   },
   modalButtonText: {
     color: '#fff',

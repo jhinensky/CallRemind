@@ -96,15 +96,16 @@ const read=async(uri:string):Promise<string>=>
 const parse=(data:string):Contact[]=>
 {
   const results=papa.parse(data,{header:true})
+  const timestamp = Date.now()
   return results.data.map((row:any,index:number)=>
     (
       {
-        id:index,
+        id: timestamp + index,
         name:row.name,
         dob:row.dob||'',
         phone:row.phone||'',
         lastSpoken:row.lastSpoken||new Date().toISOString(),
-        avatar:row.avatar||'👤'
+        avatar: (row.avatar && row.avatar.trim().length > 0) ? row.avatar.trim() : '👤'
       }
     )
   )
@@ -121,7 +122,6 @@ export const choose_file=async(loaded:(contacts:Contact[])=>void)=>
     loaded(contacts)
   }
 }
-
 
 export const pick_image = async (loaded: (uri: string) => void) => {
   const result = await picker.getDocumentAsync({ type: 'image/*' });
