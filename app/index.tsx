@@ -166,6 +166,9 @@ export default function Homes() {
         </View>
       </Modal>
 
+      {/* --- NEW TITLE HERE --- */}
+      <Text style={styles.appTitle}>Random Contact Caller</Text>
+
       <TouchableOpacity style={styles.import_btn} onPress={handle_contacts}>
         <Text style={styles.import_text}>Import Contacts</Text>
       </TouchableOpacity>
@@ -223,6 +226,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
+  // --- NEW STYLE HERE ---
+  appTitle: {
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#333',
+    marginBottom: 20,
+    marginTop: -20, // Helps pull it up slightly if the container is centered
+    letterSpacing: 0.5,
+  },
+  // ... existing styles ...
   buttonRow: {
     flexDirection: 'row',
     gap: 8,
